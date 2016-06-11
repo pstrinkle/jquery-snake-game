@@ -82,6 +82,24 @@
             <td>Speed of movement in milliseconds.</td>
           </tr>
           <tr>
+            <td>snakeColor</td>
+            <td>css string</td>
+            <td><code>blue</code></td>
+            <td>Color of the snake.</td>
+          </tr>
+          <tr>
+            <td>foodColor</td>
+            <td>css string</td>
+            <td><code>blue</code></td>
+            <td>Color of the food.</td>
+          </tr>
+          <tr>
+            <td>startLength</td>
+            <td>integer</td>
+            <td><code>1</code></td>
+            <td>Starting length of the snake.</td>
+          </tr>
+          <tr>
             <td>onPoint</td>
             <td>callback</td>
             <td><code>null</code></td>
@@ -114,6 +132,12 @@
             <td></td>
             <td>start the game (or reset the game)</td>
           </tr>
+          <tr>
+            <td><code>'turn'</code></td>
+            <td>direction</td>
+            <td>string</td>
+            <td>turn the snake, <code>left, right, up, down</code></td>
+          </tr>
         </tbody>
       </table>
 
@@ -126,8 +150,8 @@
 var $p = $('#points');
 $p.levelup({'start' : 0, showThousands: true});
 
-$('#container').snakeGame({rows: 20,
-                           cols: 20,
+$('#container').snakeGame({rows: 40,
+                           cols: 40,
                            speed: 250,
                            onPoint: function(increase) {
                                $p.levelup('increment', increase);
@@ -144,16 +168,16 @@ $('#start').on('click', function(event) {
 
     $('#container').snakeGame('start');
 });</pre>
-      <span id='points'></span> points - <span id='over'></span><br />
+      <span id='points'>0</span> points - <span id='over'></span><br />
       <button id='start'>Start game</button>
       <div id='container' style='background-color:black;border:5px solid black;display:table-cell;'></div>
 <script>
 $(function() {
     var $p = $('#points');
-    $p.levelup({'start' : 0, showThousands: true});
+    $p.levelup({'start' : 0});
 
-    $('#container').snakeGame({rows: 20,
-                               cols: 20,
+    $('#container').snakeGame({rows: 40,
+                               cols: 40,
                                onPoint: function(increase) {
                                    $p.levelup('increment', increase);
                                },
@@ -164,7 +188,7 @@ $(function() {
         event.preventDefault();
         $('#log').empty();
 
-        $('#points').text('0');
+        $p.levelup('reset');
         $('#over').text('');
 
         $('#container').snakeGame('start');

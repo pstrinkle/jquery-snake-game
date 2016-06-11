@@ -32,6 +32,9 @@ You should specify options like in usage example above.
 | rows | integer | `50` | Number of rows. |
 | cols | integer | `50` | Number of columns. |
 | speed | integer | `100` | Speed of movement in milliseconds. |
+| snakeColor | css string | `blue` | Color of the snake. |
+| foodColor | css string | `red` | Color of the food. |
+| startLength | integer | `1` | Starting length of the snake. |
 | onPoint | callback | `null` | Function called with single parameter, the score increase. |
 | onGameOver | callback | `null` | Function called when the game ends. |
 
@@ -42,6 +45,7 @@ There are a few methods to programmatically change the painting.
 | Method | Param | Type | Description |
 | ---- | ---- | ---- | ---- |
 | `start` | |  | Start the game! |
+| `turn` | direction | string | turn the snake, `left, right, up, down` |
 
 License
 -------
