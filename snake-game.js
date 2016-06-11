@@ -53,9 +53,30 @@
          */
         onGameOver: null,
 
+        /**
+         * startLength
+         * 
+         * Starting length of the snake.
+         */
+        startLength: 1,
+        
+        /**
+         * snakeColor
+         * 
+         * The color of the snake
+         */
+        snakeColor: 'blue',
+        
+        /**
+         * foodColor
+         * 
+         * The color of the food
+         */
+        foodColor: 'red',
+        
         /* snake-specific properties. */
         direction: 'right',
-        startLength: 3,
+
         snakeBody: [], /* an array of grid points. */
         food: {}, /* a dictionary of grid points. */
         timeOut: null,
@@ -114,7 +135,11 @@
                 this.snakeBody.unshift({i: 0, j: j}); /* so that [0] is the head */
             }
 
-            var l = {i: 0, j: 0, color: 'blue', direction: 'right', length: this.startLength};
+            var l = {i: 0,
+            		 j: 0,
+            		 color: this.snakeColor,
+            		 direction: 'right',
+            		 length: this.startLength};
             this.el.paintbox('line', l);
         },
 
@@ -178,7 +203,7 @@
                 
                 if (!alreadyFood && !inSnake) {
                     this.food[i + ',' + j] = 1;
-                    this.el.paintbox('cell', {i: i, j: j, color: 'red'});
+                    this.el.paintbox('cell', {i: i, j: j, color: this.foodColor});
                 }
 
                 x += 1;
@@ -246,7 +271,7 @@
                 delete instance.food[ni + ',' + nj];
 
                 instance.snakeBody.unshift({i: ni, j: nj});
-                instance.el.paintbox('cell', {i: ni, j: nj, color: 'blue'});
+                instance.el.paintbox('cell', {i: ni, j: nj, color: instance.snakeColor});
 
                 if (Object.keys(instance.food).length == 0) {
                     instance.createFood(2);
@@ -261,7 +286,7 @@
                 instance.el.paintbox('cell', {i: t.i, j: t.j, color: 'white'});
 
                 instance.snakeBody.unshift({i: ni, j: nj});
-                instance.el.paintbox('cell', {i: ni, j: nj, color: 'blue'});
+                instance.el.paintbox('cell', {i: ni, j: nj, color: instance.snakeColor});
             }
 
             return;
@@ -361,6 +386,29 @@
                 return this.each(function() {
                     var instance = $(this).data(dataName);
                     enableGame(instance);
+                });
+            } else if (configOrCommand === 'turn') {
+            	return this.each(function() {
+                    var instance = $(this).data(dataName);
+                	var nd = commandArgument;
+
+                    if (nd === 'left') {
+                    	if (instance.direction !== 'right') {
+                    		instance.direction = nd;                        
+                        }                    	
+                    } else if (nd === 'up') {
+                    	if (instance.direction !== 'down') {
+                    		instance.direction = nd;
+                        }
+                    } else if (nd === 'right') {
+                    	if (instance.direction !== 'left') {
+                    		instance.direction = nd;
+                        }
+                    } else if (nd === 'down') {
+                    	if (instance.direction !== 'up') {
+                    		instance.direction = nd;
+                        }
+                    }
                 });
             }
         }
