@@ -14,6 +14,8 @@
     <!-- above the fold, it is render-blocking deliberately. -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
+    <script src="http://www.1shoe.net/jquery-levelup/dist/jquery.levelup.js"></script>
+    <!-- required -->
     <script src="http://www.1shoe.net/jquery-paintbox/paintbox.js"></script>
     <script src="snake-game.js"></script>
 
@@ -30,42 +32,145 @@
 
     <section class="main-content">
       <h3><a id="basics" class="anchor" href="#basics" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Basics</h3>
-      <p>I started this just to have fun over a lunch break to have a custom MS Paint written in JavaScript.  But it's going to do more and more, and I'm going to make it extendible.</p>
+      <p>For fun I made this to prove-out that my MS Paint plugin could be extended nicely.</p>
       
+      <p>Amusingly the demo below uses three plugins I've written to make a larger game from the pieces.</p>
+
       <p><strong>It won't support multiple instances being played simultaneously.</strong></p>
 
       <h3>Installation</h3>
       <p>Basically just include the file.</p>
+      <pre class="prettyprint lang-html">
+&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="/libs/jquery-snake-game/jquery.snake-game.js"&gt;&lt;/script&gt;
+
+&lt;div id='container'&gt;&lt;/span&gt;
+
+&lt;script&gt;
+    $('#container').snakeGame({rows: 20, cols: 20});
+&lt;/script&gt;
+</pre>
 
       <h3>Usage</h3>
+      <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>rows</td>
+            <td>integer</td>
+            <td><code>50</code></td>
+            <td>Number of rows.</td>
+          </tr>
+          <tr>
+            <td>cols</td>
+            <td>integer</td>
+            <td><code>50</code></td>
+            <td>Number of columns.</td>
+          </tr>
+          <tr>
+            <td>speed</td>
+            <td>integer</td>
+            <td><code>100</code></td>
+            <td>Speed of movement in milliseconds.</td>
+          </tr>
+          <tr>
+            <td>onPoint</td>
+            <td>callback</td>
+            <td><code>null</code></td>
+            <td>Function called with single parameter, the score increase.</td>
+          </tr>
+          <tr>
+            <td>onGameOver</td>
+            <td>callback</td>
+            <td><code>null</code></td>
+            <td>Function called when the game ends.</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <br />
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>method</th>
+            <th>param</th>
+            <th>type</th>
+            <th>description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>'start'</code></td>
+            <td></td>
+            <td></td>
+            <td>start the game (or reset the game)</td>
+          </tr>
+        </tbody>
+      </table>
+
 
       <h3>Demos</h3>
       <p>I will put a few demos here.</p>
 
       <h4>Default paintbox</h4>
       <pre class="prettyprint lang-js">
-$('#container').snakeGame({});</pre>
-      <p>I put a black background the div because it's default off-color is white.</p>
-      <button id='start'>Start game</button><span id='points'>0</span> points
+var $p = $('#points');
+$p.levelup({'start' : 0, showThousands: true});
+
+$('#container').snakeGame({rows: 20,
+                           cols: 20,
+                           speed: 250,
+                           onPoint: function(increase) {
+                               $p.levelup('increment', increase);
+                           },
+                           onGameOver: function() {
+                               $('#over').text('Game over!');
+                           }});
+$('#start').on('click', function(event) {
+    event.preventDefault();
+    $('#log').empty();
+
+    $('#points').text('0');
+    $('#over').text('');
+
+    $('#container').snakeGame('start');
+});</pre>
+      <span id='points'></span> points - <span id='over'></span><br />
+      <button id='start'>Start game</button>
       <div id='container' style='background-color:black;border:5px solid black;display:table-cell;'></div>
 <script>
 $(function() {
-    
-    var updatePoints = function(increase) {
-        var p = $('#points');
-        var pnts = parseInt(p.text());
-        p.text(pnts + increase);
-    };
+    var $p = $('#points');
+    $p.levelup({'start' : 0, showThousands: true});
 
-    $('#container').snakeGame({rows: 20, cols: 20, onpoint: updatePoints});
+    $('#container').snakeGame({rows: 20,
+                               cols: 20,
+                               onPoint: function(increase) {
+                                   $p.levelup('increment', increase);
+                               },
+                               onGameOver: function() {
+                                   $('#over').text('Game over!');
+                               }});
     $('#start').on('click', function(event) {
         event.preventDefault();
         $('#log').empty();
+
+        $('#points').text('0');
+        $('#over').text('');
+
         $('#container').snakeGame('start');
     });
 });
 </script>
-      <ul id='log'></ul>
 
       <h3>License</h3>
       <p><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></p>

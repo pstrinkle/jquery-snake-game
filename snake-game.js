@@ -37,13 +37,21 @@
         cols: 50,
         rows: 50,
         cell: 10,
+        speed: 100,
 
         /**
-         * onpoint
+         * onPoint
          * 
          * Called with the point increase.
          */
-        onpoint: null,
+        onPoint: null,
+
+        /**
+         * onGameOver
+         * 
+         * Called when the game ends.
+         */
+        onGameOver: null,
 
         /* snake-specific properties. */
         direction: 'right',
@@ -189,6 +197,10 @@
             
             this.el.paintbox('cell', {i: curr.i, j: curr.j, color: 'white'});
             this.el.paintbox('fill', {i: curr.i, j: curr.j, color: 'black'});
+            
+            if (this.onGameOver) {
+                this.onGameOver();
+            }
         },
 
         /**
@@ -240,8 +252,8 @@
                     instance.createFood(2);
                 }
                 
-                if (instance.onpoint) {
-                    instance.onpoint(1);
+                if (instance.onPoint) {
+                    instance.onPoint(1);
                 }
             } else {
                 /* just turn off tail, and turn on head at new location. */
@@ -340,7 +352,7 @@
             /* start the snake moving. */
             instance.timeOut = setInterval(function() {
                 instance.moveSnake();
-            }, 500);
+            }, instance.speed);
         };
 
         if (typeof configOrCommand == 'string') {
