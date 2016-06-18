@@ -73,9 +73,10 @@
          * The color of the food
          */
         foodColor: 'red',
-        
+
         /* snake-specific properties. */
         direction: 'right',
+        nextDirection: 'right',
 
         snakeBody: [], /* an array of grid points. */
         food: {}, /* a dictionary of grid points. */
@@ -86,22 +87,22 @@
             switch(e.which) {
                 case 37: // left
                     if (this.direction !== 'right') {
-                        this.direction = 'left';                        
+                        this.nextDirection = 'left';                        
                     }
                     break;
                 case 38: // up
                     if (this.direction !== 'down') {
-                        this.direction = 'up';
+                        this.nextDirection = 'up';
                     }
                     break;
                 case 39: // right
                     if (this.direction !== 'left') {
-                        this.direction = 'right';
+                        this.nextDirection = 'right';
                     }
                     break;
                 case 40: // down
                     if (this.direction !== 'up') {
-                        this.direction = 'down';
+                        this.nextDirection = 'down';
                     }
                     break;
                 default: return; // exit this handler for other keys
@@ -243,6 +244,11 @@
             var instance = this;
             var curr = instance.snakeBody[0];
             var ni, nj;
+
+            /* update direction if necessary. */
+            if (instance.direction !== instance.nextDirection) {
+            	instance.direction = instance.nextDirection;
+            }
 
             if (instance.direction === 'right') {
                 ni = curr.i;
@@ -394,19 +400,19 @@
 
                     if (nd === 'left') {
                         if (instance.direction !== 'right') {
-                            instance.direction = nd;                        
+                            instance.nextDirection = nd;                        
                         }                        
                     } else if (nd === 'up') {
                         if (instance.direction !== 'down') {
-                            instance.direction = nd;
+                            instance.nextDirection = nd;
                         }
                     } else if (nd === 'right') {
                         if (instance.direction !== 'left') {
-                            instance.direction = nd;
+                            instance.nextDirection = nd;
                         }
                     } else if (nd === 'down') {
                         if (instance.direction !== 'up') {
-                            instance.direction = nd;
+                            instance.nextDirection = nd;
                         }
                     }
                 });
