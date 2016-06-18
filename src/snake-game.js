@@ -136,10 +136,10 @@
             }
 
             var l = {i: 0,
-            		 j: 0,
-            		 color: this.snakeColor,
-            		 direction: 'right',
-            		 length: this.startLength};
+                     j: 0,
+                     color: this.snakeColor,
+                     direction: 'right',
+                     length: this.startLength};
             this.el.paintbox('line', l);
         },
 
@@ -204,9 +204,9 @@
                 if (!alreadyFood && !inSnake) {
                     this.food[i + ',' + j] = 1;
                     this.el.paintbox('cell', {i: i, j: j, color: this.foodColor});
+                    
+                    x += 1;
                 }
-
-                x += 1;
             }
         },
 
@@ -388,25 +388,25 @@
                     enableGame(instance);
                 });
             } else if (configOrCommand === 'turn') {
-            	return this.each(function() {
+                return this.each(function() {
                     var instance = $(this).data(dataName);
-                	var nd = commandArgument;
+                    var nd = commandArgument;
 
                     if (nd === 'left') {
-                    	if (instance.direction !== 'right') {
-                    		instance.direction = nd;                        
-                        }                    	
+                        if (instance.direction !== 'right') {
+                            instance.direction = nd;                        
+                        }                        
                     } else if (nd === 'up') {
-                    	if (instance.direction !== 'down') {
-                    		instance.direction = nd;
+                        if (instance.direction !== 'down') {
+                            instance.direction = nd;
                         }
                     } else if (nd === 'right') {
-                    	if (instance.direction !== 'left') {
-                    		instance.direction = nd;
+                        if (instance.direction !== 'left') {
+                            instance.direction = nd;
                         }
                     } else if (nd === 'down') {
-                    	if (instance.direction !== 'up') {
-                    		instance.direction = nd;
+                        if (instance.direction !== 'up') {
+                            instance.direction = nd;
                         }
                     }
                 });
