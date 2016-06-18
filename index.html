@@ -193,7 +193,7 @@ $(function() {
                                },
                                onGameOver: function() {
                                    $('#over').text('Game over!');
-                                   var endScore = parseInt($p.text()); /* not necessarily right, should add accessor. */
+                                   var endScore = $p.levelup('get');
                                    if (endScore > score) {
                                        $('#high').text(endScore);
                                        Cookies.set('high', endScore, {expires:365});
