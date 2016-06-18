@@ -14,6 +14,7 @@
     <!-- above the fold, it is render-blocking deliberately. -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
+    <script src="assets/js.cookie-2.1.2.min.js"></script>
     <script src="assets/jquery-levelup/1.0.0/jquery.levelup.min.js"></script>
     <!-- required -->
     <script src="assets/jquery-paintbox/0.1.0/jquery.paintbox.min.js"></script>
@@ -168,11 +169,20 @@ $('#start').on('click', function(event) {
 
     $('#container').snakeGame('start');
 });</pre>
+      <p>your high score: <span id='high'></span> (we use cookies for this purpose only)</p>
       <span id='points'>0</span> points - <span id='over'></span><br />
       <button id='start'>Start game</button>
       <div id='container' style='background-color:black;border:5px solid black;display:table-cell;'></div>
 <script>
 $(function() {
+    var score = Cookies.get('high');
+    if (score == undefined) {
+        $('#high').text(0);
+        score = 0;
+    } else {
+        $('#high').text(score);
+    }
+
     var $p = $('#points');
     $p.levelup({'start' : 0});
 
@@ -183,6 +193,11 @@ $(function() {
                                },
                                onGameOver: function() {
                                    $('#over').text('Game over!');
+                                   var endScore = parseInt($p.text()); /* not necessarily right, should add accessor. */
+                                   if (endScore > score) {
+                                       $('#high').text(endScore);
+                                       Cookies.set('high', endScore);
+                                   }
                                }});
     $('#start').on('click', function(event) {
         event.preventDefault();
