@@ -196,7 +196,8 @@ $(function() {
                                    var endScore = parseInt($p.text()); /* not necessarily right, should add accessor. */
                                    if (endScore > score) {
                                        $('#high').text(endScore);
-                                       Cookies.set('high', endScore);
+                                       Cookies.set('high', endScore, {expires:365});
+                                       score = endScore;
                                    }
                                }});
     $('#start').on('click', function(event) {
