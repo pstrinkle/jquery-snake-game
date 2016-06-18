@@ -73,9 +73,10 @@
          * The color of the food
          */
         foodColor: 'red',
-        
+
         /* snake-specific properties. */
         direction: 'right',
+        nextDirection: 'right',
 
         snakeBody: [], /* an array of grid points. */
         food: {}, /* a dictionary of grid points. */
@@ -86,22 +87,22 @@
             switch(e.which) {
                 case 37: // left
                     if (this.direction !== 'right') {
-                        this.direction = 'left';                        
+                        this.nextDirection = 'left';                        
                     }
                     break;
                 case 38: // up
                     if (this.direction !== 'down') {
-                        this.direction = 'up';
+                        this.nextDirection = 'up';
                     }
                     break;
                 case 39: // right
                     if (this.direction !== 'left') {
-                        this.direction = 'right';
+                        this.nextDirection = 'right';
                     }
                     break;
                 case 40: // down
                     if (this.direction !== 'up') {
-                        this.direction = 'down';
+                        this.nextDirection = 'down';
                     }
                     break;
                 default: return; // exit this handler for other keys
@@ -136,10 +137,10 @@
             }
 
             var l = {i: 0,
-            		 j: 0,
-            		 color: this.snakeColor,
-            		 direction: 'right',
-            		 length: this.startLength};
+                     j: 0,
+                     color: this.snakeColor,
+                     direction: 'right',
+                     length: this.startLength};
             this.el.paintbox('line', l);
         },
 
@@ -204,9 +205,9 @@
                 if (!alreadyFood && !inSnake) {
                     this.food[i + ',' + j] = 1;
                     this.el.paintbox('cell', {i: i, j: j, color: this.foodColor});
+                    
+                    x += 1;
                 }
-
-                x += 1;
             }
         },
 
@@ -243,6 +244,11 @@
             var instance = this;
             var curr = instance.snakeBody[0];
             var ni, nj;
+
+            /* update direction if necessary. */
+            if (instance.direction !== instance.nextDirection) {
+            	instance.direction = instance.nextDirection;
+            }
 
             if (instance.direction === 'right') {
                 ni = curr.i;
@@ -322,6 +328,7 @@
             $(document).unbind('keydown', this.keyH);
 
             this.direction = 'right';
+            this.nextDirection = 'right';
 
             while (this.snakeBody.pop());
 
@@ -388,25 +395,25 @@
                     enableGame(instance);
                 });
             } else if (configOrCommand === 'turn') {
-            	return this.each(function() {
+                return this.each(function() {
                     var instance = $(this).data(dataName);
-                	var nd = commandArgument;
+                    var nd = commandArgument;
 
                     if (nd === 'left') {
-                    	if (instance.direction !== 'right') {
-                    		instance.direction = nd;                        
-                        }                    	
+                        if (instance.direction !== 'right') {
+                            instance.nextDirection = nd;                        
+                        }                        
                     } else if (nd === 'up') {
-                    	if (instance.direction !== 'down') {
-                    		instance.direction = nd;
+                        if (instance.direction !== 'down') {
+                            instance.nextDirection = nd;
                         }
                     } else if (nd === 'right') {
-                    	if (instance.direction !== 'left') {
-                    		instance.direction = nd;
+                        if (instance.direction !== 'left') {
+                            instance.nextDirection = nd;
                         }
                     } else if (nd === 'down') {
-                    	if (instance.direction !== 'up') {
-                    		instance.direction = nd;
+                        if (instance.direction !== 'up') {
+                            instance.nextDirection = nd;
                         }
                     }
                 });
