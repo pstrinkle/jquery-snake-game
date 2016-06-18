@@ -177,7 +177,6 @@ $('#start').on('click', function(event) {
 <script>
 $(function() {
     var score = Cookies.get('high');
-    console.log('score: ' + score);
     if (score == undefined) {
         $('#high').text(0);
         score = 0;
