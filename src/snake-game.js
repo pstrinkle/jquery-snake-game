@@ -328,6 +328,7 @@
             $(document).unbind('keydown', this.keyH);
 
             this.direction = 'right';
+            this.nextDirection = 'right';
 
             while (this.snakeBody.pop());
 
