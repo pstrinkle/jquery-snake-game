@@ -35,6 +35,8 @@ You should specify options like in usage example above.
 | snakeColor | css string | `blue` | Color of the snake. |
 | foodColor | css string | `red` | Color of the food. |
 | startLength | integer | `1` | Starting length of the snake. |
+| cornerFood | boolean | `true` | Can food spawn in the corner? |
+| wallFood | boolean | `true` | Can food spawn against the outer wall? |
 | onPoint | callback | `null` | Function called with single parameter, the score increase. |
 | onGameOver | callback | `null` | Function called when the game ends. |
 
