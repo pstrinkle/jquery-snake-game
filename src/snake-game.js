@@ -38,6 +38,8 @@
         rows: 50,
         cell: 10,
         speed: 100,
+        cornerFood: true,
+        wallFood: true,
 
         /**
          * onPoint
@@ -203,9 +205,31 @@
                 var inSnake = this.checkCollision(i, j); // needlessly checks the walls.
                 
                 if (!alreadyFood && !inSnake) {
+                    /* walls, 0, cols-1, 0, rows-1 */
+                    var rMax = this.rows - 1;
+                    var cMax = this.cols - 1;
+
+                    /* if we don't allow the food to be along the wall. */
+                    if (!this.wallFood) {
+                        if (i == 0 || j == 0 || i == rMax || j == cMax) {
+                            break;
+                        }
+                    }
+
+                    /* if we don't allow the food to be in a corner;
+                     * in theory we could allow walls and not corners, so
+                     * we need this check which is technicaly handled above
+                     */
+                    if (!this.cornerFood) {
+                        if ((i == 0 && j == 0) || (i == rMax && j == 0) ||
+                            (i == 0 && j == cMax) || (i == rMax && j == cMax)) {
+                            break;
+                        }
+                    }
+                    
                     this.food[i + ',' + j] = 1;
                     this.el.paintbox('cell', {i: i, j: j, color: this.foodColor});
-                    
+
                     x += 1;
                 }
             }
@@ -247,7 +271,7 @@
 
             /* update direction if necessary. */
             if (instance.direction !== instance.nextDirection) {
-            	instance.direction = instance.nextDirection;
+                instance.direction = instance.nextDirection;
             }
 
             if (instance.direction === 'right') {
