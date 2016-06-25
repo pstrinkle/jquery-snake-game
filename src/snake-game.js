@@ -75,6 +75,8 @@
          * The color of the food
          */
         foodColor: 'red',
+        
+        offColor: 'white',
 
         /* snake-specific properties. */
         direction: 'right',
@@ -120,9 +122,10 @@
         buildIt: function() {
             var el = this.el;
             var baseId = this.elId;
-            
+
             /* build the paintbox. */
             el.paintbox({interactive: false,
+                         offColor: this.offColor,
                          rows: this.rows,
                          cols: this.cols});
         },
@@ -252,9 +255,14 @@
             this.timeOut = null;
             var curr = this.snakeBody[0];
             
-            this.el.paintbox('cell', {i: curr.i, j: curr.j, color: 'white'});
-            this.el.paintbox('fill', {i: curr.i, j: curr.j, color: 'black'});
-            
+            if (this.offColor == 'white') {
+                this.el.paintbox('cell', {i: curr.i, j: curr.j, color: 'white'});
+                this.el.paintbox('fill', {i: curr.i, j: curr.j, color: 'black'});
+            } else {
+                this.el.paintbox('cell', {i: curr.i, j: curr.j, color: this.offColor});
+                this.el.paintbox('fill', {i: curr.i, j: curr.j, color: 'white'});
+            }
+
             if (this.onGameOver) {
                 this.onGameOver();
             }
@@ -320,7 +328,7 @@
             } else {
                 /* just turn off tail, and turn on head at new location. */
                 var t = instance.snakeBody.pop();
-                instance.el.paintbox('cell', {i: t.i, j: t.j, color: 'white'});
+                instance.el.paintbox('cell', {i: t.i, j: t.j, color: instance.offColor});
 
                 instance.snakeBody.unshift({i: ni, j: nj});
                 instance.el.paintbox('cell', {i: ni, j: nj, color: instance.snakeColor});

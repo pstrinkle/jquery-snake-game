@@ -18,7 +18,7 @@
     <script src="assets/js.cookie-2.1.2.min.js"></script>
     <script src="assets/jquery-levelup/1.0.2/jquery.levelup.min.js"></script>
     <!-- required -->
-    <script src="assets/jquery-paintbox/0.1.0/jquery.paintbox.min.js"></script>
+    <script src="assets/jquery-paintbox/0.1.1/jquery.paintbox.min.js"></script>
     <script src="src/snake-game.js"></script>
 
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
@@ -189,9 +189,20 @@ $('#start').on('click', function(event) {
         <option>red</option>
         <option>green</option>
         <option>yellow</option>
+        <option>white</option>
       </select>
       Food color
       <select id='foodcolor'>
+        <option>red</option>
+        <option>blue</option>
+        <option>lightblue</option>
+        <option>green</option>
+        <option>yellow</option>
+        <option>white</option>
+      </select>
+      Background color
+      <select id='offcolor'>
+        <option>white</option>
         <option>red</option>
         <option>blue</option>
         <option>lightblue</option>
@@ -228,11 +239,13 @@ $(function() {
         $('#container').empty();
         var scolor = $('#snakecolor option:selected').text();
         var fcolor = $('#foodcolor option:selected').text();
+        var bcolor = $('#offcolor option:selected').text();
 
         $('#container').snakeGame({rows: 40,
                                    cols: 40,
                                    snakeColor: scolor,
                                    foodColor: fcolor,
+                                   offColor: bcolor,
                                    onPoint: function(increase) {
                                        $p.levelup('increment', increase);
                                    },
