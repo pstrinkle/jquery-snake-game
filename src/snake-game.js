@@ -191,13 +191,20 @@
             /* randomly choose where to place the food, for each request and
              * verify it's not in the snake.
              */
-            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+            /* Returns a random integer between min (included) and max 
+             * (excluded):
+             * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+             */
             var getRandomInt = function(min, max) {
                 return Math.floor(Math.random() * (max - min)) + min;
             }
 
+            /* in theory, there could be no place to put the food and this
+             * will loop infinitely.
+             */
             var x = 0;
             while (x < n) {
+                /* could use 1, this.rows-1) if they don't allow walls. */
                 var i = getRandomInt(0, this.rows);
                 var j = getRandomInt(0, this.cols);
 
