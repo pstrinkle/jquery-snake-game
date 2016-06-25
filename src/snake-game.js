@@ -75,7 +75,12 @@
          * The color of the food
          */
         foodColor: 'red',
-        
+
+        /**
+         * offColor
+         * 
+         * The color for the background paintbox.
+         */
         offColor: 'white',
 
         /* snake-specific properties. */
@@ -236,7 +241,7 @@
                             break;
                         }
                     }
-                    
+
                     this.food[i + ',' + j] = 1;
                     this.el.paintbox('cell', {i: i, j: j, color: this.foodColor});
 
@@ -346,7 +351,7 @@
             var i, j;
             for (i = 0; i < this.rows; i++) {
                 for (j = 0; j < this.cols; j++) {
-                    this.el.paintbox('cell', {i: i, j: j, color: 'white'});
+                    this.el.paintbox('cell', {i: i, j: j, color: this.offColor});
                 }
             }
 
