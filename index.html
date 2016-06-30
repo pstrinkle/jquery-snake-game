@@ -40,6 +40,117 @@
 
       <p><strong>It won't support multiple instances being played simultaneously.</strong></p>
 
+      <h3>Demos</h3>
+
+      Snake color
+      <select id='snakecolor'>
+        <option>blue</option>
+        <option>lightblue</option>
+        <option>red</option>
+        <option>lightgreen</option>
+        <option>green</option>
+        <option>yellow</option>
+        <option>white</option>
+      </select>
+      Food color
+      <select id='foodcolor'>
+        <option>red</option>
+        <option>blue</option>
+        <option>lightblue</option>
+        <option>lightgreen</option>
+        <option>green</option>
+        <option>yellow</option>
+        <option>white</option>
+      </select>
+      Background color
+      <select id='offcolor'>
+        <option>white</option>
+        <option>blue</option>
+        <option>lightblue</option>
+        <option>red</option>
+        <option>lightgreen</option>
+        <option>green</option>
+        <option>yellow</option>
+      </select>
+
+      <p>your high score: <span id='high'></span> (we use cookies for this purpose only)</p>
+      <span id='points'>0</span> points - <span id='over'></span><br />
+      <button id='start'>Start game</button>
+      <div id='container' style='background-color:black;border:5px solid black;display:table-cell;'></div>
+
+      <pre class="prettyprint lang-js">
+var $p = $('#points');
+$p.levelup({'start' : 0, showThousands: true});
+
+$('#container').snakeGame({rows: 40,
+                           cols: 40,
+                           speed: 250,
+                           onPoint: function(increase) {
+                               $p.levelup('increment', increase);
+                           },
+                           onGameOver: function() {
+                               $('#over').text('Game over!');
+                           }});
+$('#start').on('click', function(event) {
+    event.preventDefault();
+    $('#log').empty();
+
+    $('#points').text('0');
+    $('#over').text('');
+
+    $('#container').snakeGame('start');
+});</pre>
+<script>
+$(function() {
+    var initialized = false;
+    
+    var score = Cookies.get('high');
+    if (score == undefined) {
+        $('#high').text(0);
+        score = 0;
+    } else {
+        $('#high').text(score);
+    }
+
+    var $p = $('#points');
+    $p.levelup({'start' : 0});
+
+    $('#start').on('click', function(event) {
+        event.preventDefault();
+        $('#log').empty();
+
+        $p.levelup('reset');
+        $('#over').text('');
+
+        $('#container').empty();
+        var scolor = $('#snakecolor option:selected').text();
+        var fcolor = $('#foodcolor option:selected').text();
+        var bcolor = $('#offcolor option:selected').text();
+
+        $('#container').snakeGame({rows: 40,
+                                   cols: 40,
+                                   snakeColor: scolor,
+                                   foodColor: fcolor,
+                                   offColor: bcolor,
+                                   onPoint: function(increase) {
+                                       $p.levelup('increment', increase);
+                                   },
+                                   onGameOver: function() {
+                                       $('#over').text('Game over!');
+                                       var endScore = $p.levelup('get');
+                                       if (endScore > score) {
+                                           $('#high').text(endScore);
+                                           Cookies.set('high', endScore, {expires:365});
+                                           score = endScore;
+                                       }
+                                   }
+        });
+
+        $('#container').snakeGame('start');
+    });
+});
+</script>
+
       <h3>Installation</h3>
       <p>Basically just include the file.</p>
       <pre class="prettyprint lang-html">
@@ -154,119 +265,6 @@
           </tr>
         </tbody>
       </table>
-
-
-      <h3>Demos</h3>
-      <p>I will put a few demos here.</p>
-
-      <h4>Default paintbox</h4>
-      <pre class="prettyprint lang-js">
-var $p = $('#points');
-$p.levelup({'start' : 0, showThousands: true});
-
-$('#container').snakeGame({rows: 40,
-                           cols: 40,
-                           speed: 250,
-                           onPoint: function(increase) {
-                               $p.levelup('increment', increase);
-                           },
-                           onGameOver: function() {
-                               $('#over').text('Game over!');
-                           }});
-$('#start').on('click', function(event) {
-    event.preventDefault();
-    $('#log').empty();
-
-    $('#points').text('0');
-    $('#over').text('');
-
-    $('#container').snakeGame('start');
-});</pre>
-      Snake color
-      <select id='snakecolor'>
-        <option>blue</option>
-        <option>lightblue</option>
-        <option>red</option>
-        <option>lightgreen</option>
-        <option>green</option>
-        <option>yellow</option>
-        <option>white</option>
-      </select>
-      Food color
-      <select id='foodcolor'>
-        <option>red</option>
-        <option>blue</option>
-        <option>lightblue</option>
-        <option>lightgreen</option>
-        <option>green</option>
-        <option>yellow</option>
-        <option>white</option>
-      </select>
-      Background color
-      <select id='offcolor'>
-        <option>white</option>
-        <option>blue</option>
-        <option>lightblue</option>
-        <option>red</option>
-        <option>lightgreen</option>
-        <option>green</option>
-        <option>yellow</option>
-      </select>
-
-      <p>your high score: <span id='high'></span> (we use cookies for this purpose only)</p>
-      <span id='points'>0</span> points - <span id='over'></span><br />
-      <button id='start'>Start game</button>
-      <div id='container' style='background-color:black;border:5px solid black;display:table-cell;'></div>
-<script>
-$(function() {
-    var initialized = false;
-    
-    var score = Cookies.get('high');
-    if (score == undefined) {
-        $('#high').text(0);
-        score = 0;
-    } else {
-        $('#high').text(score);
-    }
-
-    var $p = $('#points');
-    $p.levelup({'start' : 0});
-
-    $('#start').on('click', function(event) {
-        event.preventDefault();
-        $('#log').empty();
-
-        $p.levelup('reset');
-        $('#over').text('');
-
-        $('#container').empty();
-        var scolor = $('#snakecolor option:selected').text();
-        var fcolor = $('#foodcolor option:selected').text();
-        var bcolor = $('#offcolor option:selected').text();
-
-        $('#container').snakeGame({rows: 40,
-                                   cols: 40,
-                                   snakeColor: scolor,
-                                   foodColor: fcolor,
-                                   offColor: bcolor,
-                                   onPoint: function(increase) {
-                                       $p.levelup('increment', increase);
-                                   },
-                                   onGameOver: function() {
-                                       $('#over').text('Game over!');
-                                       var endScore = $p.levelup('get');
-                                       if (endScore > score) {
-                                           $('#high').text(endScore);
-                                           Cookies.set('high', endScore, {expires:365});
-                                           score = endScore;
-                                       }
-                                   }
-        });
-
-        $('#container').snakeGame('start');
-    });
-});
-</script>
 
       <h3>License</h3>
       <p><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></p>
